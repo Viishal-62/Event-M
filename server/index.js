@@ -14,7 +14,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true  , limit : "50mb" }));
 
 app.use(cors({
-    origin : "https://event-m-lemon.vercel.app",
+
+    origin : "https://event-m-lemon.vercel.app" || "http://localhost:5173",
     credentials : true
 }))
 
