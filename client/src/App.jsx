@@ -44,10 +44,7 @@ export const App = () => {
           path="/features"
           element={user ? <MainPage /> : <Navigate to="/auth" replace />}
         />
-        <Route
-          path="/event/:Id"
-          element={user ? <ShowEvent /> : <Navigate to="/auth" replace />}
-        />
+        <Route path="/event/:Id" element={<ShowEvent />} />
         <Route
           path="/edit-event/:Id"
           element={user ? <Edit /> : <Navigate to="/auth" replace />}
