@@ -52,14 +52,17 @@ export const useEventStore = create((set) => ({
   // ✅ Get Single Event
   getEvent: async (eventId) => {
     try {
-      const res = await axiosInstance.get(`/api/events/${eventId}`);
+      const res = await axiosInstance.get(`/api/event/get-event/${eventId}`);
       set({ currentEvent: res.data.event || null });
+
+      
       return {
         success: true,
         message: res.data.message || "Event fetched successfully",
         data: res.data.event,
       };
     } catch (err) {
+      console.log(err)
       return {
         success: false,
         message: err.response?.data?.message || "Failed to fetch event",

@@ -55,7 +55,8 @@ const SpeakerCard = ({ name, title, imgSrc, delay }) => (
 
 // --- Main Component ---
 export default function ShowEvent() {
-  const { events, getEvents, registerForEvent } = useEventStore();
+  const { events, getEvents, registerForEvent, currentEvent, getEvent } =
+    useEventStore();
   const { Id } = useParams();
 
   const [formData, setFormData] = useState({
@@ -74,6 +75,15 @@ export default function ShowEvent() {
   useEffect(() => {
     getEvents();
   }, [getEvents]);
+
+  useEffect(() => {
+    async function pelelPel() {
+      await getEvent(Id);
+    }
+    pelelPel();
+  }, []);
+
+  console.log(currentEvent);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsMounted(true), 100);
@@ -107,7 +117,7 @@ export default function ShowEvent() {
       .filter(([key, value]) => value)
       .map(([key]) => {
         const index = key.split("-")[1];
-        return event.interests[index];
+        return currentEvent?.interests[index];
       });
 
     if (
@@ -140,7 +150,7 @@ export default function ShowEvent() {
     }
   };
 
-  if (!events.length) {
+  if (!currentEvent) {
     return (
       <div className="min-h-screen bg-gray-100 dark:bg-slate-900 text-gray-800 dark:text-gray-200 font-sans antialiased transition-colors duration-300 overflow-x-hidden relative">
         <Loader className="w-5 h-5 animate-spin" />
@@ -176,13 +186,13 @@ export default function ShowEvent() {
             {/* Header */}
             <header className="text-center max-w-3xl mx-auto">
               <p className="text-sm font-semibold text-teal-600 dark:text-teal-400 uppercase tracking-wider">
-                {event?.subtitle}
+                {currentEvent?.subtitle}
               </p>
               <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mt-2 leading-tight bg-clip-text bg-gradient-to-r from-teal-500 to-green-500 dark:from-teal-400 dark:to-green-400">
-                {event?.title}
+                {currentEvent?.title}
               </h1>
               <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                {event?.description}
+                {currentEvent?.description}
               </p>
             </header>
 
@@ -191,7 +201,7 @@ export default function ShowEvent() {
               className={`max-w-4xl mx-auto h-48 md:h-64 bg-cover bg-center rounded-2xl shadow-lg mt-10 border-4 border-white/50 dark:border-gray-700/50 transition-all duration-500 ease-out delay-100 ${
                 isMounted ? "opacity-100 scale-100" : "opacity-0 scale-95"
               }`}
-              style={{ backgroundImage: `url(${event.bannerUrl})` }}
+              style={{ backgroundImage: `url(${currentEvent?.bannerUrl})` }}
               role="img"
               aria-label="Event banner"
             >
@@ -204,13 +214,13 @@ export default function ShowEvent() {
                 isMounted ? "opacity-100" : "opacity-0"
               }`}
             >
-              {event?.speakers?.length > 0 && (
+              {currentEvent?.speakers?.length > 0 && (
                 <>
                   <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8">
                     Featured Speakers
                   </h2>
                   <div className="grid md:grid-cols-3 gap-8">
-                    {event.speakers.map((speaker, i) => (
+                    {currentEvent.speakers.map((speaker, i) => (
                       <SpeakerCard
                         key={speaker.name}
                         {...speaker}
@@ -230,13 +240,13 @@ export default function ShowEvent() {
             >
               <div className="p-8 md:p-10">
                 {/* Event Timetable */}
-                {event?.timetable?.length > 0 && (
+                {currentEvent?.timetable?.length > 0 && (
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                       Event Timetable
                     </h2>
                     <ul className="space-y-3 text-gray-600 dark:text-gray-300">
-                      {event.timetable.map((item, idx) => (
+                      {currentEvent.timetable.map((item, idx) => (
                         <li
                           key={idx}
                           className="flex items-center  hover:bg-gray-100/50 dark:hover:bg-gray-700/50 p-2 rounded-md transition-colors duration-200"
@@ -350,7 +360,7 @@ export default function ShowEvent() {
                             Areas of Interest
                           </label>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                            {event.interests?.map((interest, index) => (
+                            {currentEvent?.interests?.map((interest, index) => (
                               <InterestCheckbox
                                 key={index}
                                 id={`interest-${index}`}

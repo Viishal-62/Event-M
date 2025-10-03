@@ -30,8 +30,7 @@ const DashboardPage = () => {
   // Fetch registrations whenever selectedEventId changes
   useEffect(() => {
     if (!selectedEventId) return;
-
-    console.log(selectedEventId)
+    
     const fetchRegistrations = async () => {
       const res = await getAllRegisteredEvents(selectedEventId); // pass eventId
       const regs = res.data?.[selectedEventId]?.registrations || [];

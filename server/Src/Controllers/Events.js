@@ -45,19 +45,20 @@ export const createEvent = async(req,res) =>{
 
 export const getEvent = async(req,res) =>{
     try {
-        if(!req.user){
-            return res.status(401).json({message : "Unauthorized: Please Login!"})
-        }
+       
 
         const {eventId} = req.params;
+
+        console.log(eventId)
+
 
         if(!eventId){
             return res.status(400).json({message : "Event ID is required"})
         }
 
-        const events = await eventModel.findOne({ id : eventId ,creator : req.user._id});
-        if(events.length){
-            return res.status(200).json({message : "events fetched successfully" , events})
+        const event = await eventModel.findById(eventId);
+        if(event){
+            return res.status(200).json({message : "events fetched successfully" , event})
         }else{
             return res.status(404).json({message : "No events found"})
         }
@@ -69,7 +70,9 @@ export const getEvent = async(req,res) =>{
 
 export const getEvents = async(req,res) =>{
     try {
-      
+        if(!req.user){
+            return res.status(401).json({message : "Unauthorized: Please Login!"})
+        }
         const events = await eventModel.find({creator : req.user._id});
         if(events.length){
             return res.status(200).json({message : "events fetched successfully" , events})

@@ -8,7 +8,7 @@ import { upload , uploadFields } from "../Config/FilesUpload.js";
 
 router.post("/create-event" ,authMiddleware , uploadFields ,createEvent )
 router.get("/get-events" , authMiddleware , getEvents);
-router.get("/get-event/:eventId" , authMiddleware , getEvent);
+router.get("/get-event/:eventId"  , getEvent);
 router.put("/edit-event/:eventId" , authMiddleware , uploadFields , editEvent);
 router.delete("/delete-event/:eventId" , authMiddleware ,deleteEvent);
 router.post("/register-event/:eventId" , registerForEvent )
