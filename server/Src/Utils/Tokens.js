@@ -12,7 +12,7 @@ export const createToken = (id, res) => {
  
     res.cookie("token", token, {
       httpOnly: true,         
-      secure: secretKeys.NODE_ENV === "PRODUCTION",  
+      secure: true,  
       sameSite: "strict",        
       maxAge: 7 * 24 * 60 * 60 * 1000, 
     });
