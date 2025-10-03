@@ -69,9 +69,7 @@ export const getEvent = async(req,res) =>{
 
 export const getEvents = async(req,res) =>{
     try {
-        if(!req.user){
-            return res.status(401).json({message : "Unauthorized: Please Login!"})
-        }
+      
         const events = await eventModel.find({creator : req.user._id});
         if(events.length){
             return res.status(200).json({message : "events fetched successfully" , events})
